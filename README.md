@@ -11,7 +11,7 @@ Current operations
 ### Setup
 
 1. Go to Box developer site
-1. Create an Application
+1. Create an Application (Must have globally unique name)
 1. Generate a developer token
 1. Rename the `res/example.local.config.json` file to `res/local.config.json`
 1. Place the token in the config file

@@ -1,6 +1,6 @@
 package com.company.cbess;
 
-import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.OutputStream;
 
 /**
@@ -12,7 +12,7 @@ public class CompanyBoxItem {
      * Provides upload operation
      */
     interface ICompanyBoxItemUploader {
-        void upload();
+        void upload(String fileName) throws IOException;
     }
 
     /**

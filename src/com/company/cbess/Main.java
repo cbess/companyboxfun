@@ -31,5 +31,11 @@ public class Main {
         companyBoxFolder.buildFolderTree(true);
 
         System.out.println(String.format("Root folder: %s", companyBoxFolder));
+
+        // upload
+        CompanyBoxFile file = new CompanyBoxFile(rootFolder, "/Users/caseybrumbaugh/Desktop/Brackets.1.1.Extract.dmg");
+        file.upload("");
+
+        System.out.println("Upload complete.");
     }
 }

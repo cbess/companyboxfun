@@ -27,10 +27,12 @@ public class CompanyConfig {
     }
 
     private void loadJson(String jsonString) {
-        JsonObject jsonObject = JsonObject.readFrom(jsonString);
+        try {
+            JsonObject jsonObject = JsonObject.readFrom(jsonString);
 
-        // setup config
-        mDeveloperToken = jsonObject.get("dev_token").asString();
+            // setup config
+            mDeveloperToken = jsonObject.get("dev_token").asString();
+        } catch (NullPointerException ignored) {}
     }
 
     /**

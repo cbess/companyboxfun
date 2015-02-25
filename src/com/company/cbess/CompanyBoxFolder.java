@@ -8,7 +8,7 @@ import java.util.ArrayList;
 /**
  * Represents a company box folder
  */
-public class CompanyBoxFolder {
+public class CompanyBoxFolder extends CompanyBoxItem {
     // folder traverse depth
     private static final int MAX_DEPTH = 1;
     // only child folders

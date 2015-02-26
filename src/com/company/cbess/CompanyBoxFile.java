@@ -4,6 +4,7 @@ import com.box.sdk.BoxFile;
 import com.box.sdk.BoxFolder;
 import com.box.sdk.ProgressListener;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -40,14 +41,19 @@ public class CompanyBoxFile extends CompanyBoxItem implements CompanyBoxItem.ICo
     }
 
     @Override
-    public void upload(String fileName, ProgressListener progressListener) throws IOException {
+    public void upload(String fileName, ProgressListener progressListener) throws CompanyBoxException, IOException {
 
         // check for file name
-        if (fileName == null || fileName.length() <= 0) {
+        if (isFileNameValid(fileName)) {
             // create path
             Path path = Paths.get(mLocalFilePath);
             // get file name of original file
             fileName = path.getFileName().toString();
+        }
+
+        // make sure that there is a valid file name
+        if (isFileNameValid(fileName)) {
+            throw new CompanyBoxException("Could not determine file name.");
         }
 
         // read file
@@ -60,5 +66,17 @@ public class CompanyBoxFile extends CompanyBoxItem implements CompanyBoxItem.ICo
 
         // close stream
         stream.close();
+    }
+
+    /**
+     * Determines if file name is valid
+     * @param fileName name of the file to analyze
+     * @return boolean indicating the file name's validity
+     */
+    private boolean isFileNameValid(String fileName) {
+        if (fileName == null || fileName.length() <= 0) {
+            return false;
+        }
+        return true;
     }
 }

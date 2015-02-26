@@ -57,7 +57,7 @@ public class Main {
 
     private void runUpload() throws Exception {
         // upload
-        CompanyBoxFile file = new CompanyBoxFile(getRootFolder(), "Brackets.1.1.Extract.dmg");
+        CompanyBoxFile file = new CompanyBoxFile(getRootFolder(), mConfig.getUploadDirectoryPath());
         file.upload(null, null);
 
         System.out.println("Upload complete.");

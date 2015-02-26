@@ -48,7 +48,7 @@ public class CompanyBoxFile extends CompanyBoxItem implements CompanyBoxItem.ICo
     public void upload(String fileName, ProgressListener progressListener) throws CompanyBoxException, IOException {
 
         // check for file name
-        if (isFileNameValid(fileName)) {
+        if (!isFileNameValid(fileName)) {
             // create path
             Path path = Paths.get(mLocalFilePath);
             // get file name of original file
@@ -56,7 +56,7 @@ public class CompanyBoxFile extends CompanyBoxItem implements CompanyBoxItem.ICo
         }
 
         // make sure that there is a valid file name
-        if (isFileNameValid(fileName)) {
+        if (!isFileNameValid(fileName)) {
             throw new CompanyBoxException("Could not determine file name.");
         }
 

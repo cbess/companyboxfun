@@ -33,8 +33,8 @@ public class Main {
         System.out.println(String.format("Root folder: %s", companyBoxFolder));
 
         // upload
-        CompanyBoxFile file = new CompanyBoxFile(rootFolder, "/Users/caseybrumbaugh/Desktop/Brackets.1.1.Extract.dmg");
-        file.upload("");
+        CompanyBoxFile file = new CompanyBoxFile(rootFolder, "Brackets.1.1.Extract.dmg");
+        file.upload(null, null);
 
         System.out.println("Upload complete.");
     }

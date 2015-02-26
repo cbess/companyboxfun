@@ -10,7 +10,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 /**
- * Created by caseybrumbaugh on 2/25/15.
+ * Represents the box file.
  */
 public class CompanyBoxFile extends CompanyBoxItem implements CompanyBoxItem.ICompanyBoxItemUploader, CompanyBoxItem.ICompanyBoxItemDownloader {
 
@@ -45,51 +45,30 @@ public class CompanyBoxFile extends CompanyBoxItem implements CompanyBoxItem.ICo
     }
 
     @Override
-    public void upload(String fileName) throws IOException {
+    public void upload(String fileName, ProgressListener progressListener) throws IOException {
 
         // check for file name
         if (fileName == null || fileName.length() <= 0) {
-
             // create path
             Path path = Paths.get(mLocalFilePath);
             // get file name of original file
             fileName = path.getFileName().toString();
         }
 
-        // read file from path
-        FileInputStream stream = null;
-        long fileSize = 0;
-
         // read file
-        stream = new FileInputStream(mLocalFilePath);
+        FileInputStream stream = new FileInputStream(mLocalFilePath);
+        long fileSize = stream.getChannel().size();
 
-        // get file size
-        fileSize = stream.getChannel().size();
-
-// TODO: Check if file has already been uploaded. If so then use uploadVersion(), otherwise an exception is thrown
+        // TODO: Check if file has already been uploaded. If so then use uploadVersion(), otherwise an exception is thrown
         // perform the file upload
-        getBoxFolder().uploadFile(stream, fileName, fileSize, new ProgressListener() {
-            @Override
-            public void onProgressChanged(long numberOfBytes, long totalBytes) {
-                //TODO: Extract this and the same functionality below into a method
-                double percentComplete = numberOfBytes / totalBytes;
-                System.out.println(String.format("%.2f percent complete", percentComplete * 100));
-            }
-        });
+        getBoxFolder().uploadFile(stream, fileName, fileSize, progressListener);
 
         // close stream
         stream.close();
     }
 
     @Override
-    public void download(OutputStream outputStream) {
-        getBoxFile().download(outputStream, new ProgressListener() {
-            @Override
-            public void onProgressChanged(long numberOfBytes, long totalBytes) {
-                //TODO: Extract this and the same functionality above into a method
-                double percentComplete = numberOfBytes / totalBytes;
-                System.out.println(String.format("%.2f percent complete", percentComplete * 100));
-            }
-        });
+    public void download(OutputStream outputStream, ProgressListener progressListener) {
+        getBoxFile().download(outputStream, progressListener);
     }
 }

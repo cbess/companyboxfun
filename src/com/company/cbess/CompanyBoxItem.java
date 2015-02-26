@@ -1,10 +1,12 @@
 package com.company.cbess;
 
+import com.box.sdk.ProgressListener;
+
 import java.io.IOException;
 import java.io.OutputStream;
 
 /**
- * Created by caseybrumbaugh on 2/25/15.
+ * Represents the company box item.
  */
 public class CompanyBoxItem {
 
@@ -12,14 +14,14 @@ public class CompanyBoxItem {
      * Provides upload operation
      */
     interface ICompanyBoxItemUploader {
-        void upload(String fileName) throws IOException;
+        void upload(String fileName, ProgressListener progressListener) throws IOException;
     }
 
     /**
      * Provides download operation
      */
     interface ICompanyBoxItemDownloader {
-        void download(OutputStream outputStream);
+        void download(OutputStream outputStream, ProgressListener progressListener);
     }
 
 }

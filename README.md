@@ -16,3 +16,8 @@ Current operations
 1. Rename the `res/example.local.config.json` file to `res/local.config.json`
 1. Place the token in the config file
 1. Then in IntelliJ mark the `res` folder as **Resource Root**
+
+
+### Notes
+
+- https://developers.box.com/detailed-error-messages/

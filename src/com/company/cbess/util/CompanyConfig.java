@@ -13,6 +13,7 @@ public class CompanyConfig {
         mCompanyConfig = new CompanyConfig(string);
     }
     private String mDeveloperToken;
+    private String mUploadDirectoryPath;
 
     /**
      * The default config instance.
@@ -31,8 +32,11 @@ public class CompanyConfig {
             JsonObject jsonObject = JsonObject.readFrom(jsonString);
 
             // setup config
-            mDeveloperToken = jsonObject.get("dev_token").asString();
-        } catch (NullPointerException ignored) {}
+            mDeveloperToken = jsonString(jsonObject, "dev_token");
+            mUploadDirectoryPath = jsonString(jsonObject, "upload_dir");
+        } catch (NullPointerException ex) {
+            ex.printStackTrace();
+        }
     }
 
     /**
@@ -41,5 +45,17 @@ public class CompanyConfig {
      */
     public String getDeveloperToken() {
         return mDeveloperToken;
+    }
+
+    /**
+     * The upload directory.
+     * @return Path string.
+     */
+    public String getUploadDirectoryPath() {
+        return mUploadDirectoryPath;
+    }
+
+    private String jsonString(JsonObject jsonObject, String name) {
+        return jsonObject.get(name).asString();
     }
 }

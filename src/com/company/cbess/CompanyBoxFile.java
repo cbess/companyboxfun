@@ -15,7 +15,6 @@ import java.nio.file.Paths;
 public class CompanyBoxFile extends CompanyBoxItem implements CompanyBoxItem.ICompanyBoxItemUploader, CompanyBoxItem.ICompanyBoxItemDownloader {
 
     private String mLocalFilePath;
-
     private BoxFolder.Info mBoxFolderInfo;
     private BoxFile.Info mBoxFileInfo;
 

@@ -6,7 +6,9 @@ import com.company.cbess.util.CompanyConfig;
 public class Main {
 
     public static void main(String[] args) throws Exception {
-        String devToken = CompanyConfig.getDefault().getDeveloperToken();
+        CompanyConfig config = CompanyConfig.getDefault();
+
+        String devToken = config.getDeveloperToken();
         if (devToken == null) {
             throw new Exception("No developer token. Please check local.config.json.");
         }
@@ -32,10 +34,12 @@ public class Main {
 
         System.out.println(String.format("Root folder: %s", companyBoxFolder));
 
-        // upload
-        CompanyBoxFile file = new CompanyBoxFile(rootFolder, "Brackets.1.1.Extract.dmg");
-        file.upload(null, null);
+        if (config.getUploadDirectoryPath() != null) {
+            // upload
+            CompanyBoxFile file = new CompanyBoxFile(rootFolder, "Brackets.1.1.Extract.dmg");
+            file.upload(null, null);
 
-        System.out.println("Upload complete.");
+            System.out.println("Upload complete.");
+        }
     }
 }

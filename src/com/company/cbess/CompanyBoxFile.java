@@ -5,13 +5,14 @@ import com.box.sdk.BoxFolder;
 import com.box.sdk.ProgressListener;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
 /**
  * Represents the box file.
  */
-public class CompanyBoxFile extends CompanyBoxItem implements CompanyBoxItem.ICompanyBoxItemUploader {
+public class CompanyBoxFile extends CompanyBoxItem implements CompanyBoxItem.ICompanyBoxItemUploader, CompanyBoxItem.ICompanyBoxItemDownloader {
 
     private String mLocalFilePath;
 
@@ -39,6 +40,10 @@ public class CompanyBoxFile extends CompanyBoxItem implements CompanyBoxItem.ICo
         return mBoxFolderInfo.getResource();
     }
 
+    public BoxFile getBoxFile() {
+        return mBoxFileInfo.getResource();
+    }
+
     @Override
     public void upload(String fileName, ProgressListener progressListener) throws IOException {
 
@@ -60,5 +65,10 @@ public class CompanyBoxFile extends CompanyBoxItem implements CompanyBoxItem.ICo
 
         // close stream
         stream.close();
+    }
+
+    @Override
+    public void download(OutputStream outputStream, ProgressListener progressListener) {
+        getBoxFile().download(outputStream, progressListener);
     }
 }

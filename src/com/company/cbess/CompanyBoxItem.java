@@ -21,7 +21,7 @@ public class CompanyBoxItem {
      * Provides download operation
      */
     interface ICompanyBoxItemDownloader {
-        void download(OutputStream outputStream);
+        void download(OutputStream outputStream, ProgressListener progressListener);
     }
 
 }

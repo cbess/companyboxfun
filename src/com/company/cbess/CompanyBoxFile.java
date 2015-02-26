@@ -5,13 +5,14 @@ import com.box.sdk.BoxFolder;
 import com.box.sdk.ProgressListener;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
 /**
  * Created by caseybrumbaugh on 2/25/15.
  */
-public class CompanyBoxFile extends CompanyBoxItem implements CompanyBoxItem.ICompanyBoxItemUploader {
+public class CompanyBoxFile extends CompanyBoxItem implements CompanyBoxItem.ICompanyBoxItemUploader, CompanyBoxItem.ICompanyBoxItemDownloader {
 
     private String mLocalFilePath;
 
@@ -37,6 +38,10 @@ public class CompanyBoxFile extends CompanyBoxItem implements CompanyBoxItem.ICo
 
     public BoxFolder getBoxFolder() {
         return mBoxFolderInfo.getResource();
+    }
+
+    public BoxFile getBoxFile() {
+        return mBoxFileInfo.getResource();
     }
 
     @Override
@@ -66,6 +71,7 @@ public class CompanyBoxFile extends CompanyBoxItem implements CompanyBoxItem.ICo
         getBoxFolder().uploadFile(stream, fileName, fileSize, new ProgressListener() {
             @Override
             public void onProgressChanged(long numberOfBytes, long totalBytes) {
+                //TODO: Extract this and the same functionality below into a method
                 double percentComplete = numberOfBytes / totalBytes;
                 System.out.println(String.format("%.2f percent complete", percentComplete * 100));
             }
@@ -73,5 +79,17 @@ public class CompanyBoxFile extends CompanyBoxItem implements CompanyBoxItem.ICo
 
         // close stream
         stream.close();
+    }
+
+    @Override
+    public void download(OutputStream outputStream) {
+        getBoxFile().download(outputStream, new ProgressListener() {
+            @Override
+            public void onProgressChanged(long numberOfBytes, long totalBytes) {
+                //TODO: Extract this and the same functionality above into a method
+                double percentComplete = numberOfBytes / totalBytes;
+                System.out.println(String.format("%.2f percent complete", percentComplete * 100));
+            }
+        });
     }
 }

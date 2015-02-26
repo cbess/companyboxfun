@@ -6,16 +6,16 @@ import com.box.sdk.ProgressListener;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
 /**
  * Represents the box file.
  */
-public class CompanyBoxFile extends CompanyBoxItem implements CompanyBoxItem.ICompanyBoxItemUploader {
+public class CompanyBoxFile extends CompanyBoxItem implements CompanyBoxItem.ICompanyBoxItemUploader, CompanyBoxItem.ICompanyBoxItemDownloader {
 
     private String mLocalFilePath;
-
     private BoxFolder.Info mBoxFolderInfo;
     private BoxFile.Info mBoxFileInfo;
 
@@ -38,6 +38,10 @@ public class CompanyBoxFile extends CompanyBoxItem implements CompanyBoxItem.ICo
 
     public BoxFolder getBoxFolder() {
         return mBoxFolderInfo.getResource();
+    }
+
+    public BoxFile getBoxFile() {
+        return mBoxFileInfo.getResource();
     }
 
     @Override
@@ -78,5 +82,10 @@ public class CompanyBoxFile extends CompanyBoxItem implements CompanyBoxItem.ICo
             return false;
         }
         return true;
+    }
+
+    @Override
+    public void download(OutputStream outputStream, ProgressListener progressListener) {
+        getBoxFile().download(outputStream, progressListener);
     }
 }

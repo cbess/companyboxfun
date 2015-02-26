@@ -4,18 +4,38 @@ import com.box.sdk.*;
 import com.company.cbess.util.CompanyConfig;
 
 public class Main {
+    static Main mMain = new Main();
+    static CompanyConfig mConfig = CompanyConfig.getDefault();
 
     public static void main(String[] args) throws Exception {
-        CompanyConfig config = CompanyConfig.getDefault();
+        mMain.runRootFolderDump();
 
-        String devToken = config.getDeveloperToken();
+        if (mConfig.getUploadDirectoryPath() != null) {
+            mMain.runUpload();
+        }
+    }
+
+    private BoxAPIConnection getApiConnection() throws Exception {
+        String devToken = mConfig.getDeveloperToken();
         if (devToken == null) {
             throw new Exception("No developer token. Please check local.config.json.");
         }
 
-        // connect with Box
-        BoxAPIConnection api = new BoxAPIConnection(devToken);
-        BoxFolder rootFolder = BoxFolder.getRootFolder(api);
+        return new BoxAPIConnection(devToken);
+    }
+
+    private BoxFolder getRootFolder() {
+        try {
+            return BoxFolder.getRootFolder(getApiConnection());
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+        return null;
+    }
+
+    private void runRootFolderDump() {
+        BoxFolder rootFolder = getRootFolder();
 
         try {
             for (BoxItem.Info itemInfo : rootFolder) {
@@ -33,13 +53,13 @@ public class Main {
         companyBoxFolder.buildFolderTree(true);
 
         System.out.println(String.format("Root folder: %s", companyBoxFolder));
+    }
 
-        if (config.getUploadDirectoryPath() != null) {
-            // upload
-            CompanyBoxFile file = new CompanyBoxFile(rootFolder, "Brackets.1.1.Extract.dmg");
-            file.upload(null, null);
+    private void runUpload() throws Exception {
+        // upload
+        CompanyBoxFile file = new CompanyBoxFile(getRootFolder(), "Brackets.1.1.Extract.dmg");
+        file.upload(null, null);
 
-            System.out.println("Upload complete.");
-        }
+        System.out.println("Upload complete.");
     }
 }

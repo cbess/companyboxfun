@@ -1,11 +1,9 @@
 package com.company.cbess;
 
 import com.box.sdk.BoxFile;
-import com.box.sdk.BoxFolder;
 import com.box.sdk.BoxItem;
 import com.box.sdk.ProgressListener;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.file.Path;
@@ -18,11 +16,11 @@ import java.util.Date;
 public class CompanyBoxFile extends CompanyBoxItem implements CompanyBoxItem.ICompanyBoxItemUploader, CompanyBoxItem.ICompanyBoxItemDownloader {
 
     private String mLocalFilePath;
-    private CompanyBoxFolder mCompanyBoxBoxFolder;
+    private CompanyBoxFolder mCompanyBoxFolder;
     private BoxFile.Info mBoxFileInfo;
 
     public CompanyBoxFile(CompanyBoxFolder companyBoxFolder, String localFilePath) {
-        mCompanyBoxBoxFolder = companyBoxFolder;
+        mCompanyBoxFolder = companyBoxFolder;
         mLocalFilePath = localFilePath;
     }
 
@@ -34,8 +32,8 @@ public class CompanyBoxFile extends CompanyBoxItem implements CompanyBoxItem.ICo
         return mLocalFilePath;
     }
 
-    public CompanyBoxFolder getCompanyBoxBoxFolder() {
-        return mCompanyBoxBoxFolder;
+    public CompanyBoxFolder getCompanyBoxFolder() {
+        return mCompanyBoxFolder;
     }
 
     public BoxFile getBoxFile() {
@@ -59,20 +57,15 @@ public class CompanyBoxFile extends CompanyBoxItem implements CompanyBoxItem.ICo
         }
 
         // build list of files from directory
-        getCompanyBoxBoxFolder().buildFolderTree(true);
+        getCompanyBoxFolder().buildFolderTree(true);
 
         // determine if file to be uploaded already exists
         // if it does exist get the BoxFile so it can be updated
         BoxFile boxFile = null;
-        boolean fileAlreadyExists = false;
-        int i = 0;
-        while (getCompanyBoxBoxFolder().getFileItems().size() > i || fileAlreadyExists) {
-            BoxItem.Info fileItem = getCompanyBoxBoxFolder().getFileItems().get(i);
-            if (fileName == fileItem.getName()) {
-                fileAlreadyExists = true;
+        for (BoxItem.Info fileItem : getCompanyBoxFolder().getFileItems()) {
+            if (fileName.equals(fileItem.getName())) {
                 boxFile = (BoxFile) fileItem.getResource();
             }
-            i++;
         }
 
         // read file to upload
@@ -80,12 +73,12 @@ public class CompanyBoxFile extends CompanyBoxItem implements CompanyBoxItem.ICo
         long fileSize = stream.getChannel().size();
 
         // update existing file, or upload it for the first time
-        if (fileAlreadyExists) {
+        if (boxFile != null) {
             // upload a new version of the file
             boxFile.uploadVersion(stream, new Date(), fileSize, progressListener);
         } else {
             // perform initial file upload
-            getCompanyBoxBoxFolder().getBoxFolder().uploadFile(stream, fileName, fileSize, progressListener);
+            getCompanyBoxFolder().getBoxFolder().uploadFile(stream, fileName, fileSize, progressListener);
         }
 
         // close stream

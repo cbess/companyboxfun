@@ -1,11 +1,9 @@
 package com.company.cbess;
 
 import com.box.sdk.BoxFile;
-import com.box.sdk.BoxFolder;
 import com.box.sdk.BoxItem;
 import com.box.sdk.ProgressListener;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.file.Path;
@@ -18,11 +16,11 @@ import java.util.Date;
 public class CompanyBoxFile extends CompanyBoxItem implements CompanyBoxItem.ICompanyBoxItemUploader, CompanyBoxItem.ICompanyBoxItemDownloader {
 
     private String mLocalFilePath;
-    private CompanyBoxFolder mCompanyBoxBoxFolder;
+    private CompanyBoxFolder mCompanyBoxFolder;
     private BoxFile.Info mBoxFileInfo;
 
     public CompanyBoxFile(CompanyBoxFolder companyBoxFolder, String localFilePath) {
-        mCompanyBoxBoxFolder = companyBoxFolder;
+        mCompanyBoxFolder = companyBoxFolder;
         mLocalFilePath = localFilePath;
     }
 
@@ -34,8 +32,8 @@ public class CompanyBoxFile extends CompanyBoxItem implements CompanyBoxItem.ICo
         return mLocalFilePath;
     }
 
-    public CompanyBoxFolder getCompanyBoxBoxFolder() {
-        return mCompanyBoxBoxFolder;
+    public CompanyBoxFolder getCompanyBoxFolder() {
+        return mCompanyBoxFolder;
     }
 
     public BoxFile getBoxFile() {
@@ -63,11 +61,11 @@ public class CompanyBoxFile extends CompanyBoxItem implements CompanyBoxItem.ICo
         long fileSize = stream.getChannel().size();
         
         // build list of files from directory
-        getCompanyBoxBoxFolder().buildFolderTree(true);
+        getCompanyBoxFolder().buildFolderTree(true);
 
         // determine if file to be uploaded already exists
         // if it does exist get the BoxFile so it can be updated
-        CompanyBoxFile companyBoxFile = getCompanyBoxBoxFolder().findFileByName(fileName);
+        CompanyBoxFile companyBoxFile = getCompanyBoxFolder().findFileByName(fileName);
 
         // update existing file, or upload it for the first time
         if (companyBoxFile != null) {
@@ -75,7 +73,7 @@ public class CompanyBoxFile extends CompanyBoxItem implements CompanyBoxItem.ICo
             companyBoxFile.getBoxFile().uploadVersion(stream, new Date(), fileSize, progressListener);
         } else {
             // perform initial file upload
-            getCompanyBoxBoxFolder().getBoxFolder().uploadFile(stream, fileName, fileSize, progressListener);
+            getCompanyBoxFolder().getBoxFolder().uploadFile(stream, fileName, fileSize, progressListener);
         }
 
         // close stream

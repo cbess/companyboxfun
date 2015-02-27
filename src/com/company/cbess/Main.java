@@ -57,7 +57,8 @@ public class Main {
 
     private void runUpload() throws Exception {
         // upload
-        CompanyBoxFile file = new CompanyBoxFile(getRootFolder(), mConfig.getUploadDirectoryPath());
+        CompanyBoxFolder companyBoxFolder = new CompanyBoxFolder(getRootFolder().getInfo());
+        CompanyBoxFile file = new CompanyBoxFile(companyBoxFolder, mConfig.getUploadDirectoryPath());
         file.upload(null, null);
 
         System.out.println("Upload complete.");

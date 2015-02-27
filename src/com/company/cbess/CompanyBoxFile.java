@@ -2,6 +2,7 @@ package com.company.cbess;
 
 import com.box.sdk.BoxFile;
 import com.box.sdk.BoxFolder;
+import com.box.sdk.BoxItem;
 import com.box.sdk.ProgressListener;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -9,6 +10,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Date;
 
 /**
  * Represents the box file.
@@ -16,11 +18,11 @@ import java.nio.file.Paths;
 public class CompanyBoxFile extends CompanyBoxItem implements CompanyBoxItem.ICompanyBoxItemUploader, CompanyBoxItem.ICompanyBoxItemDownloader {
 
     private String mLocalFilePath;
-    private BoxFolder.Info mBoxFolderInfo;
+    private CompanyBoxFolder mCompanyBoxBoxFolder;
     private BoxFile.Info mBoxFileInfo;
 
-    public CompanyBoxFile(BoxFolder boxFolder, String localFilePath) {
-        mBoxFolderInfo = boxFolder.getInfo();
+    public CompanyBoxFile(CompanyBoxFolder companyBoxFolder, String localFilePath) {
+        mCompanyBoxBoxFolder = companyBoxFolder;
         mLocalFilePath = localFilePath;
     }
 
@@ -36,8 +38,8 @@ public class CompanyBoxFile extends CompanyBoxItem implements CompanyBoxItem.ICo
         mLocalFilePath = localFilePath;
     }
 
-    public BoxFolder getBoxFolder() {
-        return mBoxFolderInfo.getResource();
+    public CompanyBoxFolder getCompanyBoxBoxFolder() {
+        return mCompanyBoxBoxFolder;
     }
 
     public BoxFile getBoxFile() {
@@ -60,13 +62,35 @@ public class CompanyBoxFile extends CompanyBoxItem implements CompanyBoxItem.ICo
             throw new CompanyBoxException("Could not determine file name.");
         }
 
-        // read file
+        // build list of files from directory
+        getCompanyBoxBoxFolder().buildFolderTree(true);
+
+        // determine if file to be uploaded already exists
+        // if it does exist get the BoxFile so it can be updated
+        BoxFile boxFile = null;
+        boolean fileAlreadyExists = false;
+        int i = 0;
+        while (getCompanyBoxBoxFolder().getFileItems().size() > i || fileAlreadyExists) {
+            BoxItem.Info fileItem = getCompanyBoxBoxFolder().getFileItems().get(i);
+            if (fileName == fileItem.getName()) {
+                fileAlreadyExists = true;
+                boxFile = (BoxFile) fileItem.getResource();
+            }
+            i++;
+        }
+
+        // read file to upload
         FileInputStream stream = new FileInputStream(mLocalFilePath);
         long fileSize = stream.getChannel().size();
 
-        // TODO: Check if file has already been uploaded. If so then use uploadVersion(), otherwise an exception is thrown
-        // perform the file upload
-        getBoxFolder().uploadFile(stream, fileName, fileSize, progressListener);
+        // update existing file, or upload it for the first time
+        if (fileAlreadyExists) {
+            // upload a new version of the file
+            boxFile.uploadVersion(stream, new Date(), fileSize, progressListener);
+        } else {
+            // perform initial file upload
+            getCompanyBoxBoxFolder().getBoxFolder().uploadFile(stream, fileName, fileSize, progressListener);
+        }
 
         // close stream
         stream.close();

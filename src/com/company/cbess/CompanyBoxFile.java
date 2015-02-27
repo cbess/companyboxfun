@@ -58,31 +58,21 @@ public class CompanyBoxFile extends CompanyBoxItem implements CompanyBoxItem.ICo
             throw new CompanyBoxException("Could not determine file name.");
         }
 
+        // read file to upload
+        FileInputStream stream = new FileInputStream(getLocalFilePath());
+        long fileSize = stream.getChannel().size();
+        
         // build list of files from directory
         getCompanyBoxBoxFolder().buildFolderTree(true);
 
         // determine if file to be uploaded already exists
         // if it does exist get the BoxFile so it can be updated
-        BoxFile boxFile = null;
-        boolean fileAlreadyExists = false;
-        int i = 0;
-        while (getCompanyBoxBoxFolder().getFileItems().size() > i || fileAlreadyExists) {
-            BoxItem.Info fileItem = getCompanyBoxBoxFolder().getFileItems().get(i);
-            if (fileName == fileItem.getName()) {
-                fileAlreadyExists = true;
-                boxFile = (BoxFile) fileItem.getResource();
-            }
-            i++;
-        }
-
-        // read file to upload
-        FileInputStream stream = new FileInputStream(getLocalFilePath());
-        long fileSize = stream.getChannel().size();
+        CompanyBoxFile companyBoxFile = getCompanyBoxBoxFolder().findFileByName(fileName);
 
         // update existing file, or upload it for the first time
-        if (fileAlreadyExists) {
+        if (companyBoxFile != null) {
             // upload a new version of the file
-            boxFile.uploadVersion(stream, new Date(), fileSize, progressListener);
+            companyBoxFile.getBoxFile().uploadVersion(stream, new Date(), fileSize, progressListener);
         } else {
             // perform initial file upload
             getCompanyBoxBoxFolder().getBoxFolder().uploadFile(stream, fileName, fileSize, progressListener);

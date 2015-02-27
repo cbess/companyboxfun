@@ -1,5 +1,6 @@
 package com.company.cbess;
 
+import com.box.sdk.BoxFile;
 import com.box.sdk.BoxFolder;
 import com.box.sdk.BoxItem;
 
@@ -81,5 +82,34 @@ public class CompanyBoxFolder extends CompanyBoxItem {
                 folder.getFileItems().add(itemInfo);
             }
         }
+    }
+
+    /**
+     * Find a CompanyBoxFile by name
+     * @param fileName Name of the file with extension
+     * @return CompanyBoxFile, or null if not found
+     */
+    public CompanyBoxFile findFileByName(String fileName) {
+
+        // find the specified file if it exists
+        BoxFile boxFile = null;
+        boolean fileExists = false;
+        int i = 0;
+        while (i < getFileItems().size() || !fileExists) {
+            BoxItem.Info fileItem = getFileItems().get(i);
+            if (fileName.equals(fileItem.getName())) {
+                fileExists = true;
+                boxFile = (BoxFile) fileItem.getResource();
+            }
+            i++;
+        }
+
+        // build a CompanyBoxFile if BoxFile was found
+        if (boxFile != null) {
+            return new CompanyBoxFile(boxFile);
+        }
+
+        // no file found
+        return null;
     }
 }

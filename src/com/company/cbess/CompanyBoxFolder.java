@@ -85,6 +85,25 @@ public class CompanyBoxFolder extends CompanyBoxItem {
     }
 
     /**
+     * Find a CompanyBoxFolder by name
+     * @param folderName Name of the folder
+     * @return CompanyBoxFolder, or null if not found
+     */
+    public CompanyBoxFolder findFolderByName(String folderName) {
+
+        // find the specified folder if it exists
+        CompanyBoxFolder companyBoxFolder = null;
+        for (CompanyBoxFolder companyBoxFolderItem : getChildFolders()) {
+            if (folderName.equals(companyBoxFolderItem.getName())) {
+                companyBoxFolder = companyBoxFolderItem;
+                break;
+            }
+        }
+
+        return companyBoxFolder;
+    }
+
+    /**
      * Find a CompanyBoxFile by name
      * @param fileName Name of the file with extension
      * @return CompanyBoxFile, or null if not found

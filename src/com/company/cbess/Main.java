@@ -58,6 +58,18 @@ public class Main {
     private void runUpload() throws Exception {
         // upload
         CompanyBoxFolder companyBoxFolder = new CompanyBoxFolder(getRootFolder().getInfo());
+        companyBoxFolder.buildFolderTree(true);
+
+        // use subdirectory if defined
+        if (mConfig.getBoxUploadDirectory() != null) {
+            CompanyBoxFolder uploadBoxFolder = companyBoxFolder.findFolderByName(mConfig.getBoxUploadDirectory());
+
+            // If the upload directory exists use it
+            if (uploadBoxFolder != null) {
+                companyBoxFolder = uploadBoxFolder;
+            }
+        }
+
         CompanyBoxFile file = new CompanyBoxFile(companyBoxFolder, mConfig.getUploadDirectoryPath());
         file.upload(null, null);
 

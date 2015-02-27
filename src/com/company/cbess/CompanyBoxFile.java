@@ -34,10 +34,6 @@ public class CompanyBoxFile extends CompanyBoxItem implements CompanyBoxItem.ICo
         return mLocalFilePath;
     }
 
-    public void setLocalFilePath(String localFilePath) {
-        mLocalFilePath = localFilePath;
-    }
-
     public CompanyBoxFolder getCompanyBoxBoxFolder() {
         return mCompanyBoxBoxFolder;
     }
@@ -52,7 +48,7 @@ public class CompanyBoxFile extends CompanyBoxItem implements CompanyBoxItem.ICo
         // check for file name
         if (!isFileNameValid(fileName)) {
             // create path
-            Path path = Paths.get(mLocalFilePath);
+            Path path = Paths.get(getLocalFilePath());
             // get file name of original file
             fileName = path.getFileName().toString();
         }
@@ -80,7 +76,7 @@ public class CompanyBoxFile extends CompanyBoxItem implements CompanyBoxItem.ICo
         }
 
         // read file to upload
-        FileInputStream stream = new FileInputStream(mLocalFilePath);
+        FileInputStream stream = new FileInputStream(getLocalFilePath());
         long fileSize = stream.getChannel().size();
 
         // update existing file, or upload it for the first time

@@ -93,15 +93,11 @@ public class CompanyBoxFolder extends CompanyBoxItem {
 
         // find the specified file if it exists
         BoxFile boxFile = null;
-        boolean fileExists = false;
-        int i = 0;
-        while (i < getFileItems().size() || !fileExists) {
-            BoxItem.Info fileItem = getFileItems().get(i);
-            if (fileName.equals(fileItem.getName())) {
-                fileExists = true;
-                boxFile = (BoxFile) fileItem.getResource();
+        for (BoxItem.Info boxItem : getFileItems()) {
+            if (fileName.equals(boxItem.getName())) {
+                boxFile = (BoxFile) boxItem.getResource();
+                break;
             }
-            i++;
         }
 
         // build a CompanyBoxFile if BoxFile was found

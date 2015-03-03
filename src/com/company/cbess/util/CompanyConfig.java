@@ -13,7 +13,7 @@ public class CompanyConfig {
         mCompanyConfig = new CompanyConfig(string);
     }
     private String mDeveloperToken;
-    private String mBoxUploadDirectory;
+    private String mBoxUploadDirectoryPath;
     private String mUploadDirectoryPath;
 
     /**
@@ -34,7 +34,7 @@ public class CompanyConfig {
 
             // setup config
             mDeveloperToken = jsonString(jsonObject, "dev_token");
-            mBoxUploadDirectory = jsonString(jsonObject, "box_upload_dir");
+            mBoxUploadDirectoryPath = jsonString(jsonObject, "box_upload_dir");
             mUploadDirectoryPath = jsonString(jsonObject, "upload_dir");
         } catch (NullPointerException ex) {
             ex.printStackTrace();
@@ -61,8 +61,8 @@ public class CompanyConfig {
      * The directory to upload at Box.
      * @return Directory name.
      */
-    public String getBoxUploadDirectory() {
-        return  mBoxUploadDirectory;
+    public String getBoxUploadDirectoryPath() {
+        return mBoxUploadDirectoryPath;
     }
 
     private String jsonString(JsonObject jsonObject, String name) {

@@ -61,8 +61,8 @@ public class Main {
         companyBoxFolder.buildFolderTree(true);
 
         // use subdirectory if defined
-        if (mConfig.getBoxUploadDirectory() != null) {
-            CompanyBoxFolder uploadBoxFolder = companyBoxFolder.findFolderByName(mConfig.getBoxUploadDirectory());
+        if (mConfig.getBoxUploadDirectoryPath() != null) {
+            CompanyBoxFolder uploadBoxFolder = companyBoxFolder.findFolderByName(mConfig.getBoxUploadDirectoryPath());
 
             // If the upload directory exists use it
             if (uploadBoxFolder != null) {

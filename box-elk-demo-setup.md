@@ -61,7 +61,7 @@ See [Kibana web app](http://localhost:5601/).
 
 #### Notes
 
-Alternative ELK virtual appliance: https://github.com/frntn/vagrant-elk-clientserver
+Alternate ELK virtual appliance: https://github.com/frntn/vagrant-elk-clientserver
 
 - http://brewhouse.io/blog/2014/11/04/big-data-with-elk-stack.html
 - http://blog.comperiosearch.com/blog/2014/08/14/elk-one-vagrant-box/

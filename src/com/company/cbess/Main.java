@@ -2,12 +2,17 @@ package com.company.cbess;
 
 import com.box.sdk.*;
 import com.company.cbess.util.CompanyConfig;
+import com.oracle.tools.packager.Log;
 
 public class Main {
     static Main mMain = new Main();
     static CompanyConfig mConfig = CompanyConfig.getDefault();
 
     public static void main(String[] args) throws Exception {
+        Log.Logger logger = new Log.Logger(true);
+        Log.setDebug(true);
+        Log.setLogger(logger);
+
         mMain.runRootFolderDump();
 
         if (mConfig.getUploadDirectoryPath() != null) {
@@ -45,7 +50,7 @@ public class Main {
 
     private void runRootFolderDump() {
         BoxFolder rootFolder = getRootFolder();
-
+/*
         try {
             for (BoxItem.Info itemInfo : rootFolder) {
                 System.out.println(String.format("[%s] %s\n", itemInfo.getID(), itemInfo.getName()));
@@ -56,12 +61,12 @@ public class Main {
                 System.out.println("Check the Developer Token. It may need to be renewed.");
             }
         }
-
+*/
         // build folder tree from the root of the Box
         CompanyBoxFolder companyBoxFolder = new CompanyBoxFolder(rootFolder.getInfo());
         companyBoxFolder.buildFolderTree(true);
 
-        System.out.println(String.format("Root folder: %s", companyBoxFolder));
+        Log.debug(String.format("Root folder: %s", companyBoxFolder));
     }
 
     private void runUpload() throws Exception {
@@ -82,11 +87,13 @@ public class Main {
         CompanyBoxFile file = new CompanyBoxFile(companyBoxFolder, mConfig.getUploadDirectoryPath());
         file.upload(null, null);
 
-        System.out.println("Upload complete.");
+        Log.debug("Upload complete.");
     }
 
     // keep thread-safe, async operation
     private void runCaptureEvents() {
+        Log.debug("Capturing events...");
+
         CompanyEvents events = new CompanyEvents();
         events.startCaptureEvents();
     }

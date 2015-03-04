@@ -17,6 +17,7 @@ public class CompanyConfig {
     private String mBoxUploadDirectoryPath;
     private String mUploadDirectoryPath;
     private boolean mCaptureEventsEnabled;
+    private String mLoggerUrl;
 
     /**
      * The default config instance.
@@ -39,6 +40,7 @@ public class CompanyConfig {
             mBoxUploadDirectoryPath = jsonString(jsonObject, "box_upload_dir");
             mUploadDirectoryPath = jsonString(jsonObject, "upload_dir");
             mCaptureEventsEnabled = jsonObject.get("capture_events").asBoolean();
+            mLoggerUrl = jsonString(jsonObject, "logger_url");
         } catch (NullPointerException ex) {
             ex.printStackTrace();
         }
@@ -68,8 +70,19 @@ public class CompanyConfig {
         return mBoxUploadDirectoryPath;
     }
 
+    /**
+     * Returns true if the capture events operations should be enabled.
+     */
     public boolean isCaptureEventsEnabled() {
         return mCaptureEventsEnabled;
+    }
+
+    /**
+     * The logger URL to send log messages to.
+     * @return The url string.
+     */
+    public String getLoggerUrl() {
+        return mLoggerUrl;
     }
 
     private String jsonString(JsonObject jsonObject, String name) {
@@ -77,7 +90,7 @@ public class CompanyConfig {
         if (value == null) {
             return null;
         }
-        
+
         return value.asString();
     }
 }

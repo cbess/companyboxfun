@@ -2,5 +2,6 @@
     "dev_token": "",
     "box_upload_dir": "",
     "upload_dir": "",
-    "capture_events": false
+    "capture_events": false,
+    "logger_url": ""
 }

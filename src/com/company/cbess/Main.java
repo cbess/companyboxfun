@@ -13,6 +13,19 @@ public class Main {
         Log.setDebug(true);
         Log.setLogger(logger);
 
+        try {
+            mMain.runSamples();
+        } catch (BoxAPIException ex) {
+            // 401 error = bad dev token
+            if (ex.getResponseCode() == 401) {
+                System.out.println("Check the Developer Token. It may need to be renewed.");
+            }
+        }
+    }
+
+    private void runSamples() throws Exception {
+        Log.debug("Running samples.");
+
         mMain.runRootFolderDump();
 
         if (mConfig.getUploadDirectoryPath() != null) {
@@ -55,12 +68,6 @@ public class Main {
             for (BoxItem.Info itemInfo : rootFolder) {
                 System.out.println(String.format("[%s] %s\n", itemInfo.getID(), itemInfo.getName()));
             }
-        } catch (BoxAPIException ex) {
-            // 401 error = bad dev token
-            if (ex.getResponseCode() == 401) {
-                System.out.println("Check the Developer Token. It may need to be renewed.");
-            }
-        }
 */
         // build folder tree from the root of the Box
         CompanyBoxFolder companyBoxFolder = new CompanyBoxFolder(rootFolder.getInfo());
@@ -92,7 +99,7 @@ public class Main {
 
     // keep thread-safe, async operation
     private void runCaptureEvents() {
-        Log.debug("Capturing events...");
+        Log.debug("Capturing Box events...");
 
         CompanyEvents events = new CompanyEvents();
         events.startCaptureEvents();

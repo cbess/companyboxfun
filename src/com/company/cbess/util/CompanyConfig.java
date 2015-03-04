@@ -1,6 +1,7 @@
 package com.company.cbess.util;
 
 import com.eclipsesource.json.JsonObject;
+import com.eclipsesource.json.JsonValue;
 
 /**
  * Represents the company box config.
@@ -15,6 +16,7 @@ public class CompanyConfig {
     private String mDeveloperToken;
     private String mBoxUploadDirectoryPath;
     private String mUploadDirectoryPath;
+    private boolean mCaptureEventsEnabled;
 
     /**
      * The default config instance.
@@ -36,6 +38,7 @@ public class CompanyConfig {
             mDeveloperToken = jsonString(jsonObject, "dev_token");
             mBoxUploadDirectoryPath = jsonString(jsonObject, "box_upload_dir");
             mUploadDirectoryPath = jsonString(jsonObject, "upload_dir");
+            mCaptureEventsEnabled = jsonObject.get("capture_events").asBoolean();
         } catch (NullPointerException ex) {
             ex.printStackTrace();
         }
@@ -65,7 +68,16 @@ public class CompanyConfig {
         return mBoxUploadDirectoryPath;
     }
 
+    public boolean isCaptureEventsEnabled() {
+        return mCaptureEventsEnabled;
+    }
+
     private String jsonString(JsonObject jsonObject, String name) {
-        return jsonObject.get(name).asString();
+        JsonValue value =  jsonObject.get(name);
+        if (value == null) {
+            return null;
+        }
+        
+        return value.asString();
     }
 }

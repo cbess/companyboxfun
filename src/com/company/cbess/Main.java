@@ -13,6 +13,15 @@ public class Main {
         if (mConfig.getUploadDirectoryPath() != null) {
             mMain.runUpload();
         }
+
+        if (mConfig.isCaptureEventsEnabled()) {
+            new Thread() {
+                @Override
+                public void run() {
+                    mMain.runCaptureEvents();
+                }
+            }.start();
+        }
     }
 
     private BoxAPIConnection getApiConnection() throws Exception {
@@ -74,5 +83,11 @@ public class Main {
         file.upload(null, null);
 
         System.out.println("Upload complete.");
+    }
+
+    // keep thread-safe, async operation
+    private void runCaptureEvents() {
+        CompanyEvents events = new CompanyEvents();
+        events.startCaptureEvents();
     }
 }

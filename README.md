@@ -21,3 +21,5 @@ Current operations
 ### Notes
 
 - https://developers.box.com/detailed-error-messages/
+- http://opensource.box.com/box-java-sdk/javadoc/com/box/sdk/BoxEvent.Type.html
+- https://developers.box.com/docs/#events-get-events-in-an-enterprise

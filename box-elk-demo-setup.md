@@ -59,6 +59,13 @@ Update index to `logstash`. Set time field to `@timestamp`.
 
 See [Kibana web app](http://localhost:5601/).
 
+### Setup Webserver
+
+1. Install jetty: `apt-get install jetty`
+1. Modify `/etc/default/jetty`
+1. `mkdir /opt/jetty`
+1. `chown -R jetty:jetty /opt/jetty`
+
 #### Notes
 
 Alternate ELK virtual appliance: https://github.com/frntn/vagrant-elk-clientserver

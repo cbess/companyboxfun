@@ -20,9 +20,14 @@ public class Main {
         try {
             mMain.runSamples();
         } catch (BoxAPIException ex) {
-            // 401 error = bad dev token
-            if (ex.getResponseCode() == 401) {
-                System.out.println("Check the Developer Token. It may need to be renewed.");
+            switch (ex.getResponseCode()) {
+                // 401 error = bad dev token
+                case 401:
+                    System.out.println("Check the Developer Token. It may need to be renewed.");
+                    break;
+
+                default:
+                    ex.printStackTrace();
             }
         }
     }
@@ -68,9 +73,9 @@ public class Main {
     private void runRootFolderDump() {
         BoxFolder rootFolder = getRootFolder();
 
-        for (BoxItem.Info itemInfo : rootFolder) {
-            Log.debug(String.format("[%s] %s\n", itemInfo.getID(), itemInfo.getName()));
-        }
+        //for (BoxItem.Info itemInfo : rootFolder) {
+        //    Log.debug(String.format("[%s] %s\n", itemInfo.getID(), itemInfo.getName()));
+        //}
 
         // build folder tree from the root of the Box
         CompanyBoxFolder companyBoxFolder = new CompanyBoxFolder(rootFolder.getInfo());

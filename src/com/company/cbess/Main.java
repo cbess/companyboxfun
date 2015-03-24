@@ -67,12 +67,11 @@ public class Main {
 
     private void runRootFolderDump() {
         BoxFolder rootFolder = getRootFolder();
-/*
-        try {
-            for (BoxItem.Info itemInfo : rootFolder) {
-                System.out.println(String.format("[%s] %s\n", itemInfo.getID(), itemInfo.getName()));
-            }
-*/
+
+        for (BoxItem.Info itemInfo : rootFolder) {
+            Log.debug(String.format("[%s] %s\n", itemInfo.getID(), itemInfo.getName()));
+        }
+
         // build folder tree from the root of the Box
         CompanyBoxFolder companyBoxFolder = new CompanyBoxFolder(rootFolder.getInfo());
         companyBoxFolder.buildFolderTree(true);

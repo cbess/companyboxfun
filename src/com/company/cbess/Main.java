@@ -2,16 +2,20 @@ package com.company.cbess;
 
 import com.box.sdk.*;
 import com.company.cbess.util.CompanyConfig;
-import com.oracle.tools.packager.Log;
+import com.company.cbess.util.Log;
+import com.company.cbess.util.Util;
 
 public class Main {
     static Main mMain = new Main();
-    static CompanyConfig mConfig = CompanyConfig.getDefault();
+    static CompanyConfig mConfig;
 
     public static void main(String[] args) throws Exception {
-        Log.Logger logger = new Log.Logger(true);
-        Log.setDebug(true);
-        Log.setLogger(logger);
+
+        if (args.length > 0) {
+            mConfig = new CompanyConfig(Util.getContents(args[0]));
+        } else {
+            mConfig = CompanyConfig.getDefault();
+        }
 
         try {
             mMain.runSamples();

@@ -3,8 +3,8 @@ package com.company.cbess;
 import com.box.sdk.*;
 import com.company.cbess.util.CompanyConfig;
 import com.company.cbess.util.CompanyHttpClient;
+import com.company.cbess.util.Log;
 import com.eclipsesource.json.JsonObject;
-import com.oracle.tools.packager.Log;
 
 import java.sql.Timestamp;
 

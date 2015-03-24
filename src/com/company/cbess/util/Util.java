@@ -18,6 +18,12 @@ public class Util {
             return null;
         }
 
+        return getContents(inputStream);
+    }
+
+
+    public static String getContents(InputStream inputStream) {
+
         // open stream
         BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
         StringBuilder stringBuilder = new StringBuilder("");
@@ -35,5 +41,20 @@ public class Util {
         }
 
         return stringBuilder.toString();
+
+    }
+
+    public static String getContents(String path) {
+
+        FileInputStream fileInputStream;
+
+        try {
+            fileInputStream = new FileInputStream(path);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            return null;
+        }
+
+        return getContents(fileInputStream);
     }
 }

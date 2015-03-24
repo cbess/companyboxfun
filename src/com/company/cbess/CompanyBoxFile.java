@@ -6,8 +6,6 @@ import com.box.sdk.ProgressListener;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Date;
 
 /**
@@ -46,9 +44,9 @@ public class CompanyBoxFile extends CompanyBoxItem implements CompanyBoxItem.ICo
         // check for file name
         if (!isFileNameValid(fileName)) {
             // create path
-            Path path = Paths.get(getLocalFilePath());
-            // get file name of original file
-            fileName = path.getFileName().toString();
+//            Path path = Paths.get(getLocalFilePath());
+//            // get file name of original file
+//            fileName = path.getFileName().toString();
         }
 
         // make sure that there is a valid file name
